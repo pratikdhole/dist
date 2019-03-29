@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="city">
+    <button id="getweatherforcast">Get Weather Forcast</button>
+    <div id="showweatherForcast"></div>
+    
+    <script>
+    $(document).ready(function(){
+        $('#getweatherforcast').click(function(){
+            var city = $('#city').val();
+            var key = '7e9140e26b429ab94474f0e5b5cb91bf';
+            $.ajax({
+                url : 'http://api.openweathermap.org/data/2.5/weather',
+                datatype: 'json',
+                type: 'GET',
+                data: {q:city, appid:key,units:'metric'},
+                success:function(data){
+                    var wf = '';
+                    $.each(data.weather, function(index, val){
+                            wf +='<p><b>' + data.name + "<b><img src="+ val.icon +".png></p>"+
+                                data.main.temp + '&deg;C' + '|' + val.main + "," + val.description
+                        
+                    });
+                    $('#showweatherForcast').html(wf);
+                }
+
+
+            })
+        })
+    })
+    </script>
+</body>
+</html>
