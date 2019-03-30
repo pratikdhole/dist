@@ -1,40 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <title>Document</title>
+    <title>Weather Application</title>
+    <style>
+        body {
+            width: 185px;
+            border: 1px solid #000;
+            padding: 50px;
+            margin: 50px auto;
+        }
+    </style>
 </head>
+
 <body>
-    <input type="text" id="city">
-    <button id="getweatherforcast">Get Weather Forcast</button>
+    <div class="container">
+        <span>From:</span>
+        <select id="getweatherforcast" name="city">
+            <option value="Ho Chi Minh">Ho Chi Minh</option>
+            <option value="Singapore">Singapore</option>
+            <option value="Kuala Lumpur">Kuala Lumpur</option>
+            <option value="Tokyo">Tokyo</option>
+            <option value="Athens">Athens</option>
+        </select>
+    </div>
+
+
+    <!-- message print  -->
     <div id="showweatherForcast"></div>
-    
+
+    <!-- ajax call  -->
     <script>
-    $(document).ready(function(){
-        $('#getweatherforcast').click(function(){
-            var city = $('#city').val();
-            var key = '7e9140e26b429ab94474f0e5b5cb91bf';
-            $.ajax({
-                url : 'http://api.openweathermap.org/data/2.5/weather',
-                datatype: 'json',
-                type: 'GET',
-                data: {q:city, appid:key,units:'metric'},
-                success:function(data){
-                    var wf = '';
-                    $.each(data.weather, function(index, val){
-                            wf +='<p><b>' + data.name + "<b><img src="+ val.icon +".png></p>"+
+        $(document).ready(function () {
+            $('#getweatherforcast').change(function () {
+                var city = $(this).val();
+                var key = '7e9140e26b429ab94474f0e5b5cb91bf';
+                $.ajax({
+                    url: 'http://api.openweathermap.org/data/2.5/weather',
+                    datatype: 'json',
+                    type: 'GET',
+                    data: { q: city, appid: key, units: 'metric' },
+                    success: function (data) {
+                        var wf = '';
+                        $.each(data.weather, function (index, val) {
+                            wf += '<p> Current weather :<b>' + data.name + "<b><img src=" + val.icon + ".png></p>" +
                                 data.main.temp + '&deg;C' + '|' + val.main + "," + val.description
-                        
-                    });
-                    $('#showweatherForcast').html(wf);
-                }
 
-
+                        });
+                        $('#showweatherForcast').html(wf);
+                    }
+                })
             })
         })
-    })
     </script>
 </body>
+
 </html>
